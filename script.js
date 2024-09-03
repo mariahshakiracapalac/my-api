@@ -2,23 +2,20 @@ const fetchUsersBtn = document.getElementById('fetchUsersBtn');
 const userContainer = document.getElementById('userContainer');
 const searchInput = document.getElementById('searchInput');
 
-let usersData = []; 
-
+let usersData = [];
 
 function fetchUsers() {
-    
     fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json())
         .then(users => {
-            usersData = users; 
-            displayUsers(users); 
+            usersData = users;
+            displayUsers(users);
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
             userContainer.innerHTML = '<p style="color:red;">Failed to fetch user data. Please try again later.</p>';
         });
 }
-
 
 function displayUsers(users) {
     userContainer.innerHTML = ''; 
@@ -31,6 +28,9 @@ function displayUsers(users) {
         userCard.className = 'user-card';
 
         userCard.innerHTML = `
+            <div class="profile-pic">
+                <img src="https://randomuser.me/api/portraits/men/${user.id}.jpg" alt="Profile Picture">
+            </div>
             <h3>${user.name}</h3>
             <p>Email: ${user.email}</p>
             <p>Phone: ${user.phone}</p>
@@ -42,7 +42,6 @@ function displayUsers(users) {
     });
 }
 
-
 function filterUsers() {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredUsers = usersData.filter(user => 
@@ -51,11 +50,6 @@ function filterUsers() {
     displayUsers(filteredUsers);
 }
 
-
 fetchUsersBtn.addEventListener('click', fetchUsers);
-
-
 searchInput.addEventListener('input', filterUsers);
-
-
 window.addEventListener('load', () => fetchUsers());
